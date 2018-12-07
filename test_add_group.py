@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
+
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest, time, re
+import unittest
+
 
 class LogInNewGroupCreationLogOut(unittest.TestCase):
     def setUp(self):
@@ -14,7 +13,9 @@ class LogInNewGroupCreationLogOut(unittest.TestCase):
 
     def test_log_in_new_group_creation_log_out(self):
         wd = self.wd
+        # go to main page
         wd.get("http://localhost/addressbook/")
+        # log in
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
@@ -23,8 +24,11 @@ class LogInNewGroupCreationLogOut(unittest.TestCase):
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_xpath("//input[@value='Login']").click()
+        # go to group page
         wd.find_element_by_link_text("groups").click()
+        #  init new group
         wd.find_element_by_name("new").click()
+        #  fill new group's form
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
         wd.find_element_by_name("group_name").send_keys("new_group")
@@ -34,8 +38,11 @@ class LogInNewGroupCreationLogOut(unittest.TestCase):
         wd.find_element_by_name("group_footer").click()
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys("new_group")
+        # submit new group creation
         wd.find_element_by_name("submit").click()
+        # go back to group page
         wd.find_element_by_link_text("group page").click()
+        # logout
         wd.find_element_by_link_text("Logout").click()
     
     def is_element_present(self, how, what):
@@ -50,6 +57,7 @@ class LogInNewGroupCreationLogOut(unittest.TestCase):
 
     def tearDown(self):
         self.wd.quit()
+
 
 if __name__ == "__main__":
     unittest.main()
