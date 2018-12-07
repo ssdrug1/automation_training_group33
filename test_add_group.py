@@ -11,21 +11,22 @@ class LogInNewGroupCreationLogOut(unittest.TestCase):
         self.wd = webdriver.Firefox()
         self.wd.implicitly_wait(30)
 
-    def test_log_in_new_group_creation_log_out(self):
+    def test_add_new_group(self):
         wd = self.wd
-        # go to main page
-        wd.get("http://localhost/addressbook/")
-        # log in
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
-        wd.find_element_by_id("LoginForm").click()
-        wd.find_element_by_name("pass").click()
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
-        wd.find_element_by_xpath("//input[@value='Login']").click()
-        # go to group page
-        wd.find_element_by_link_text("groups").click()
+        self.open_home_page(wd)
+        self.login(wd)
+        self.open_group_page(wd)
+        self.new_group_creation(wd)
+        self.return_to_group_page(wd)
+        self.logout(wd)
+
+    def logout(self, wd):
+        wd.find_element_by_link_text("Logout").click()
+
+    def return_to_group_page(self, wd):
+        wd.find_element_by_link_text("group page").click()
+
+    def new_group_creation(self, wd):
         #  init new group
         wd.find_element_by_name("new").click()
         #  fill new group's form
@@ -40,11 +41,26 @@ class LogInNewGroupCreationLogOut(unittest.TestCase):
         wd.find_element_by_name("group_footer").send_keys("new_group")
         # submit new group creation
         wd.find_element_by_name("submit").click()
-        # go back to group page
-        wd.find_element_by_link_text("group page").click()
-        # logout
-        wd.find_element_by_link_text("Logout").click()
-    
+
+    def open_group_page(self, wd):
+        # go to group page
+        wd.find_element_by_link_text("groups").click()
+
+    def login(self, wd):
+        # log in
+        wd.find_element_by_name("user").click()
+        wd.find_element_by_name("user").clear()
+        wd.find_element_by_name("user").send_keys("admin")
+        wd.find_element_by_id("LoginForm").click()
+        wd.find_element_by_name("pass").click()
+        wd.find_element_by_name("pass").clear()
+        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_xpath("//input[@value='Login']").click()
+
+    def open_home_page(self, wd):
+        # go to main page
+        wd.get("http://localhost/addressbook/")
+
     def is_element_present(self, how, what):
         try: self.wd.find_element(by=how, value=what)
         except NoSuchElementException as e: return False
